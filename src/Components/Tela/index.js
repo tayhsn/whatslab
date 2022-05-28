@@ -1,42 +1,44 @@
 import React from 'react';
+import { IoSendSharp } from 'react-icons/io5';
 import {
    Container,
    Input,
-   InputMensagem,
-   InputNome,
+   InputMessage,
+   InputUser,
+   Button,
    Output,
-   OutputMensagem,
+   OutputUser,
+   OutputMessage,
 } from './style.js';
 
 export class Tela extends React.Component {
    state = {
-      mensagens: [],
-      usuario: '',
-      texto: '',
+      messages: [],
+      user: '',
+      text: '',
    };
 
-   onChangeName = (event) => {
-      this.setState({ usuario: event.target.value });
+   onChangeUser = (event) => {
+      this.setState({ user: event.target.value });
    };
 
    onChangeMessage = (event) => {
-      this.setState({ texto: event.target.value });
+      this.setState({ text: event.target.value });
    };
 
    onSend = () => {
-      if (this.state.usuario.length === 0 || this.state.texto.length === 0)
-         return;
+      if (this.state.user.length === 0 || this.state.text.length === 0) return;
 
       const msgs = [
-         ...this.state.mensagens,
+         ...this.state.messages,
          {
-            usuario: this.state.usuario,
-            texto: this.state.texto,
+            user: this.state.user,
+            text: this.state.text,
          },
       ];
-      this.setState({ mensagens: msgs });
-      this.setState({ usuario: '' });
-      this.setState({ texto: '' });
+      this.setState({ messages: msgs });
+      this.setState({ user: '' });
+      this.setState({ text: '' });
    };
 
    enterKeyPress = (e) => {
@@ -44,38 +46,47 @@ export class Tela extends React.Component {
    };
 
    render() {
+      const messagesToRender = this.state.messages.map((message, index) => {
+         const name = message.user.toLowerCase();
+         if (name === 'eu') {
+            return (
+               <OutputMessage user={'eu'} key={index}>
+                  {message.text}
+               </OutputMessage>
+            );
+         } else {
+            return (
+               <OutputMessage key={index}>
+                  <OutputUser>{message.user}</OutputUser>
+                  {message.text}
+               </OutputMessage>
+            );
+         }
+      });
+
       return (
          <Container>
-            <Output>
-               {this.state.mensagens.map((mensagem, indice) => {
-                  return (
-                     <OutputMensagem key={indice}>
-                        <strong>{mensagem.usuario}: </strong>
-                        {mensagem.texto}
-                     </OutputMensagem>
-                  );
-               })}
-            </Output>
+            <Output>{messagesToRender}</Output>
 
             <Input>
-               <InputNome
+               <InputUser
                   type='text'
                   placeholder='Nome'
-                  onChange={this.onChangeName}
-                  value={this.state.usuario}
+                  onChange={this.onChangeUser}
+                  value={this.state.user}
                />
 
-               <InputMensagem
+               <InputMessage
                   type='text'
                   placeholder='Mensagem'
                   onChange={this.onChangeMessage}
-                  value={this.state.texto}
+                  value={this.state.text}
                   onKeyPress={this.enterKeyPress}
                />
 
-               <button onClick={this.onSend} onKeyPress={this.enterKeyPress}>
-                  Enviar
-               </button>
+               <Button onClick={this.onSend} onKeyPress={this.enterKeyPress}>
+                  <IoSendSharp size={26} color='#ffffff' />
+               </Button>
             </Input>
          </Container>
       );
