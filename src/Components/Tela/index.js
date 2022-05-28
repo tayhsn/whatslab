@@ -26,8 +26,10 @@ export class Tela extends React.Component {
       this.setState({ text: event.target.value });
    };
 
+   enterKeyPress = (e) => (e.code === 'Enter' ? this.onSend() : null);
+
    onSend = () => {
-      if (this.state.user.length === 0 || this.state.text.length === 0) return;
+      if (!this.state.user || !this.state.text) return;
 
       const msgs = [
          ...this.state.messages,
@@ -41,22 +43,33 @@ export class Tela extends React.Component {
       this.setState({ text: '' });
    };
 
-   enterKeyPress = (e) => {
-      if (e.code === 'Enter') this.onSend();
+   onDelete = (id) => {
+      const allMessages = [...this.state.messages];
+
+      const newMessages = allMessages.filter((msgs, index) => index !== id);
+
+      this.setState({ messages: newMessages });
    };
 
    render() {
       const messagesToRender = this.state.messages.map((message, index) => {
-         const name = message.user.toLowerCase();
-         if (name === 'eu') {
+         const user = message.user.toLowerCase();
+         if (user === 'eu') {
             return (
-               <OutputMessage user={'eu'} key={index}>
+               <OutputMessage
+                  onDoubleClick={() => this.onDelete(index)}
+                  user={'eu'}
+                  key={index}
+               >
                   {message.text}
                </OutputMessage>
             );
          } else {
             return (
-               <OutputMessage key={index}>
+               <OutputMessage
+                  onDoubleClick={() => this.onDelete(index)}
+                  key={index}
+               >
                   <OutputUser>{message.user}</OutputUser>
                   {message.text}
                </OutputMessage>
