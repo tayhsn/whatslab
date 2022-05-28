@@ -49,6 +49,8 @@ const Output = styled.div`
    display: flex;
    flex-direction: column;
    justify-content: flex-end;
+
+   overflow: auto;
 `;
 
 const OutputUser = styled.div`
