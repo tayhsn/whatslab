@@ -6,6 +6,8 @@ Aplicação que simula a troca de mensagens entre usuários.
 
 Primeiro projeto de fixação do módulo de React.js da [Labenu](https://www.labenu.com.br/).
 
+[Deploy do App](https://whatslab.vercel.app/)
+
 ![Layout da Aplicação](./src/Components/images/image.png)
 
 ## Implementação
